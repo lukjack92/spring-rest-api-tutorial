@@ -50,14 +50,14 @@ tasks.register('generatePostsAndComments') {
 		dataSQL.write("")
 		//Posts
 		for(int i = 1; i <= 100; i++) {
-			dataSQL.append("INSERT INTO POST(id, title, content, created) " +
-					"VALUES (${i}, 'Test post ${i}', 'Content ${i}' ,'" + LocalDateTime.now().minusDays(100 - i) + "');\n")
+			dataSQL.append("INSERT INTO POST(title, content, created) " +
+					"VALUES ('Test post ${i}', 'Content ${i}' ,'" + LocalDateTime.now().minusDays(100 - i) + "');\n")
 		}
 		//Comments
 		for(int i = 1; i<=100; i++) {
 			int post_id = (int) (1 + i / 10)
-			dataSQL.append("INSERT INTO COMMENT(id, post_id, content, created) " +
-					"VALUES (${i}, ${post_id}, 'Comment ${i}', '"+LocalDateTime.now().minusDays(100-i)+"');\n")
+			dataSQL.append("INSERT INTO COMMENT(post_id, content, created) " +
+					"VALUES (${post_id}, 'Comment ${i}', '"+LocalDateTime.now().minusDays(100-i)+"');\n")
 		}
 	}
 }

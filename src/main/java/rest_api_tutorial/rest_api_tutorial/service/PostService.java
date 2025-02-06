@@ -1,10 +1,13 @@
 package rest_api_tutorial.rest_api_tutorial.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.mapping.SortableValue;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import rest_api_tutorial.rest_api_tutorial.model.Comment;
 import rest_api_tutorial.rest_api_tutorial.model.Post;
 import rest_api_tutorial.rest_api_tutorial.repository.CommentRepository;
@@ -44,5 +47,21 @@ public class PostService {
         return comments.stream()
                 .filter(comment -> comment.getPostId() == id)
                 .collect(Collectors.toList());
+    }
+
+    public Post addPost(Post post) {
+        return postRepository.save(post);
+    }
+
+    @Transactional
+    public Post editPost(Post post) {
+        Post postToEdit = postRepository.findById(post.getId()).orElseThrow();
+        postToEdit.setTitle(post.getTitle());
+        postToEdit.setContent(post.getContent());
+        return postToEdit;
+    }
+
+    public void deletePost(long id) {
+        postRepository.deleteById(id);
     }
 }
