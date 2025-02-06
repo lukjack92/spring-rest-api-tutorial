@@ -1,0 +1,63 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'rest-api-tutorial'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(23)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+//task generatePostsAndComments() {
+tasks.register('generatePostsAndComments') {
+	doLast {
+		File dataSQL = file("src/main/resources/data.sql")
+		dataSQL.write("")
+		//Posts
+		for(int i = 1; i <= 100; i++) {
+			dataSQL.append("INSERT INTO POST(id, title, content, created) " +
+					"VALUES (${i}, 'Test post ${i}', 'Content ${i}' ,'" + LocalDateTime.now().minusDays(100 - i) + "');\n")
+		}
+		//Comments
+		for(int i = 1; i<=100; i++) {
+			int post_id = (int) (1 + i / 10)
+			dataSQL.append("INSERT INTO COMMENT(id, post_id, content, created) " +
+					"VALUES (${i}, ${post_id}, 'Comment ${i}', '"+LocalDateTime.now().minusDays(100-i)+"');\n")
+		}
+	}
+}
