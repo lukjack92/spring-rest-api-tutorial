@@ -10,7 +10,7 @@ import rest_api_tutorial.rest_api_tutorial.service.HelloService;
 @RequiredArgsConstructor
 public class HelloController {
 
-    @Autowired
+    //@Autowired
     private final HelloService helloService;
     /*
     //Construction, it can be uses where remove the @RequiredArgsConstructor - annotation lombok

@@ -2,6 +2,7 @@ package rest_api_tutorial.rest_api_tutorial.controller;
 
 import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rest_api_tutorial.rest_api_tutorial.controller.dto.PostDto;
 import rest_api_tutorial.rest_api_tutorial.model.Post;
